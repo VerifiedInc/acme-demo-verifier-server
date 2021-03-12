@@ -162,6 +162,7 @@ workflows:
       - deploy-image-sandbox:
           requires:
             - build-and-push-image-sandbox
+          context: AWS-Dev
           repo: acme-demo-verifier-server
           deployment: acme-demo-verifier-server
           filters:
