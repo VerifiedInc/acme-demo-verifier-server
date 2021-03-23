@@ -10,6 +10,7 @@ import session from './api/session/session.service';
 import verifier from './api/verifier/verifier.service';
 import presentationRequest from './api/presentationRequest/presentationRequest.service';
 import presentation from './api/presentation/presentation.service';
+import email from './api/email/email.service';
 
 export default function (app: Application): void {
   app.configure(sessionData);
@@ -21,4 +22,5 @@ export default function (app: Application): void {
   app.configure(verifier);
   app.configure(presentationRequest);
   app.configure(presentation);
+  app.configure(email);
 }
