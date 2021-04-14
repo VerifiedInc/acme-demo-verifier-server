@@ -1,5 +1,4 @@
 import { sendSms, UnumDto } from '@unumid/server-sdk';
-// import { MessageInput } from '@unumid/types';
 import { GeneralError } from '@feathersjs/errors';
 
 import { Application } from '../../../declarations';
