@@ -1140,9 +1140,9 @@
     bs58 "^4.0.1"
     fast-json-stable-stringify "^2.1.0"
 
-"@unumid/server-sdk@git+ssh://git@github.com/UnumID/Server-SDK-Typescript.git#ver":
-  version "1.3.2"
-  resolved "git+ssh://git@github.com/UnumID/Server-SDK-Typescript.git#37dde76b449f39f7219d52f8a94b2298aa1e3193"
+"@unumid/server-sdk@git+ssh://git@github.com/UnumID/Server-SDK-Typescript.git#1.4.0":
+  version "1.4.0"
+  resolved "git+ssh://git@github.com/UnumID/Server-SDK-Typescript.git#ff1efd55654a6bd094f11a86b9986481fbc055ba"
   dependencies:
     "@types/uuid" "^8.3.0"
     "@unumid/library-crypto" "https://github.com/UnumID/Library-Crypto-TypeScript.git#v1.2.0"
