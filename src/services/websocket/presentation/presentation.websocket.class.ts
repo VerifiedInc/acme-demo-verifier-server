@@ -5,7 +5,7 @@ import { Service as MikroOrmService } from 'feathers-mikro-orm';
 import { Application } from '../../../declarations';
 import { NoPresentationEntity } from '../../../entities/NoPresentation';
 import { PresentationEntity } from '../../../entities/Presentation';
-import { DemoNoPresentationDto as DemoNoPresentationDtoDeprecated, DemoPresentationDto as DemoPresentationDtoDeprecated } from '@unumid/demo-types-deprecated';
+import { DemoNoPresentationDto as DemoNoPresentationDtoDeprecated, DemoPresentationDto as DemoPresentationDtoDeprecated } from '@unumid/demo-types-deprecated-v1';
 import { DemoPresentationDto, WithVersion } from '@unumid/demo-types';
 import { lt } from 'semver';
 

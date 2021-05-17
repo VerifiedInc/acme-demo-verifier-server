@@ -25,8 +25,8 @@ import {
 } from '../src/services/api/presentation/presentation.class';
 import { DemoPresentationDto, DemoPresentationRequestDto, WithVersion } from '@unumid/demo-types';
 import { DecryptedPresentation, UnumDto, createProof } from '@unumid/server-sdk';
-import { CredentialSubject } from '@unumid/server-sdk-deprecated';
-import { DemoNoPresentationDto } from '@unumid/demo-types-deprecated';
+import { CredentialSubject } from '@unumid/server-sdk-deprecated-v1';
+import { DemoNoPresentationDto } from '@unumid/demo-types-deprecated-v1';
 
 // export const dummyVerifierDid = `did:unum:${v4()}`;
 export const dummyVerifierDid = 'did:unum:3ff2f020-50b0-4f4c-a267-a9f104aedcd8';

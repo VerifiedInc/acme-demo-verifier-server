@@ -11,7 +11,7 @@ import {
   Proof,
   PresentationRequestDto,
   EncryptedPresentation
-} from '@unumid/types-deprecated';
+} from '@unumid/types-deprecated-v1';
 import { encrypt } from '@unumid/library-crypto';
 
 import { VerifierEntityOptions, VerifierEntity } from '../src/entities/Verifier';
@@ -24,8 +24,8 @@ import {
   PresentationWithVerificationDeprecated,
   NoPresentationWithVerificationDeprecated
 } from '../src/services/api/presentation/presentation.class';
-import { DemoNoPresentationDto, DemoPresentationDto, DemoPresentationRequestDto } from '@unumid/demo-types-deprecated';
-import { DecryptedPresentation, UnumDto, createProof } from '@unumid/server-sdk-deprecated';
+import { DemoNoPresentationDto, DemoPresentationDto, DemoPresentationRequestDto } from '@unumid/demo-types-deprecated-v1';
+import { DecryptedPresentation, UnumDto, createProof } from '@unumid/server-sdk-deprecated-v1';
 import { WithVersion } from '@unumid/demo-types';
 
 // export const dummyVerifierDid = `did:unum:${v4()}`;

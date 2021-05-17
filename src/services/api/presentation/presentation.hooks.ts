@@ -1,6 +1,6 @@
 import { Hook } from '@feathersjs/feathers';
 import { BadRequest } from '@feathersjs/errors';
-import { EncryptedPresentation, Presentation as PresentationDeprecated, NoPresentation as NoPresentationDeprecated } from '@unumid/types-deprecated';
+import { EncryptedPresentation, Presentation as PresentationDeprecated, NoPresentation as NoPresentationDeprecated } from '@unumid/types-deprecated-v1';
 import { WithVersion } from '@unumid/demo-types';
 import { valid } from 'semver';
 import logger from '../../../logger';

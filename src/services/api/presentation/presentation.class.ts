@@ -1,6 +1,6 @@
 import { Params } from '@feathersjs/feathers';
 import { VerificationResponse } from '@unumid/types';
-import { NoPresentation, Presentation, EncryptedPresentation, PresentationReceiptInfo } from '@unumid/types-deprecated';
+import { NoPresentation, Presentation, EncryptedPresentation, PresentationReceiptInfo } from '@unumid/types-deprecated-v1';
 import { Service as MikroOrmService } from 'feathers-mikro-orm';
 
 import { Application } from '../../../declarations';
@@ -10,9 +10,9 @@ import logger from '../../../logger';
 import { BadRequest, NotFound } from '@feathersjs/errors';
 import { PresentationRequestEntity } from '../../../entities/PresentationRequest';
 import { CryptoError } from '@unumid/library-crypto';
-import { DecryptedPresentation, verifyPresentation, extractCredentialInfo, CredentialInfo } from '@unumid/server-sdk-deprecated';
+import { DecryptedPresentation, verifyPresentation, extractCredentialInfo, CredentialInfo } from '@unumid/server-sdk-deprecated-v1';
 import { WithVersion } from '@unumid/demo-types';
-import { VerificationResponse as VerificationResponseDeprecated } from '@unumid/demo-types-deprecated';
+import { VerificationResponse as VerificationResponseDeprecated } from '@unumid/demo-types-deprecated-v1';
 
 import { lt } from 'semver';
 
