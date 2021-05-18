@@ -11,8 +11,8 @@ import noPresentationData from './data/noPresentation.data.service';
 import session from './api/session/session.service';
 import verifier from './api/verifier/verifier.service';
 import presentationRequest from './api/presentationRequest/presentationRequest.service';
-import presentation from './api/presentation/presentation.service';
 import presentationV2 from './api/presentationV2/presentationV2.service';
+import presentationV3 from './api/presentationV2/presentationV3.service';
 import email from './api/email/email.service';
 import sms from './api/sms/sms.service';
 
@@ -28,8 +28,8 @@ export default function (app: Application): void {
   app.configure(session);
   app.configure(verifier);
   app.configure(presentationRequest);
-  app.configure(presentation);
   app.configure(presentationV2);
+  app.configure(presentationV3);
   app.configure(email);
   app.configure(sms);
   app.configure(presentationWebsocket);

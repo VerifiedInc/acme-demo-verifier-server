@@ -1,18 +1,18 @@
 import { ServiceAddons } from '@feathersjs/feathers';
 
 import { Application } from '../../../declarations';
-import { PresentationService } from './presentation.class';
+import { PresentationServiceV3 } from './presentationV3.class';
 import { PresentationEntity } from '../../../entities/Presentation';
-import { hooks } from './presentation.hooks';
+import { hooks } from './presentationV3.hooks';
 
 // add this service to the service type index
 declare module '../../../declarations' {
   interface ServiceTypes {
-    presentation: PresentationService & ServiceAddons<PresentationEntity>;
+    presentationV3: PresentationServiceV3 & ServiceAddons<PresentationEntity>;
   }
 }
 
 export default function (app: Application): void {
-  app.use('/presentation', new PresentationService({}, app));
-  app.service('presentation').hooks(hooks);
+  app.use('/presentationV3', new PresentationServiceV3({}, app));
+  app.service('presentationV3').hooks(hooks);
 }

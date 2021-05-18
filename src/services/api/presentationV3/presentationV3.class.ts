@@ -1,6 +1,6 @@
 import { Params } from '@feathersjs/feathers';
-// import { EncryptedPresentation, Presentation, PresentationReceiptInfo, VerificationResponse, WithVersion } from '@unumid/types-deprecated-v2';
-import { EncryptedPresentation, Presentation, PresentationReceiptInfo, VerificationResponse, WithVersion } from '../../../../node_modules/@unumid/types-deprecated-v2';
+import { EncryptedPresentation, Presentation, PresentationReceiptInfo, VerificationResponse } from '@unumid/types';
+import { Presentation as PresentationDeprecated } from '@unumid/types-deprecated-v1';
 import { Service as MikroOrmService } from 'feathers-mikro-orm';
 
 import { Application } from '../../../declarations';
@@ -9,7 +9,8 @@ import logger from '../../../logger';
 import { BadRequest, NotFound } from '@feathersjs/errors';
 import { PresentationRequestEntity } from '../../../entities/PresentationRequest';
 import { CryptoError } from '@unumid/library-crypto';
-import { CredentialInfo, DecryptedPresentation, extractCredentialInfo, verifyPresentation } from '@unumid/server-sdk-deprecated-v2';
+import { CredentialInfo, DecryptedPresentation, extractCredentialInfo, verifyPresentation } from '@unumid/server-sdk';
+import { WithVersion } from '@unumid/demo-types';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ServiceOptions { }
@@ -43,7 +44,7 @@ const makePresentationEntityOptionsFromPresentation = (
   };
 };
 
-export class PresentationServiceV2 {
+export class PresentationServiceV3 {
   app: Application;
   options: ServiceOptions;
   presentationDataService: MikroOrmService<PresentationEntity>;
@@ -55,7 +56,7 @@ export class PresentationServiceV2 {
   }
 
   async createPresentationEntity (presentation: DecryptedPresentation, params?: Params): Promise<PresentationEntity> {
-    const decryptedPresentation: Presentation = presentation.presentation as Presentation;
+    const decryptedPresentation: Presentation = presentation.presentation as PresentationDeprecated;
     const presentationWithVerification: PresentationWithVerification = { isVerified: presentation.isVerified, presentation: decryptedPresentation };
     const options = makePresentationEntityOptionsFromPresentation(presentationWithVerification);
     try {
@@ -85,20 +86,7 @@ export class PresentationServiceV2 {
       // Needed to roll over the old attribute value that wasn't storing the Bearer as part of the token. Ought to remove once the roll over is complete. Figured simple to enough to just handle in app code.
       const authToken = verifier.authToken.startsWith('Bearer ') ? verifier.authToken : `Bearer ${verifier.authToken}`;
 
-      const requestInfo = {
-        ...data.presentationRequestInfo,
-        presentationRequestInfo: {
-          ...data.presentationRequestInfo.presentationRequest,
-          presentationRequest: {
-            ...data.presentationRequestInfo.presentationRequest,
-            proof: {
-              ...data.presentationRequestInfo.presentationRequest.proof,
-              created: data.presentationRequestInfo.presentationRequest.proof.created as string
-            }
-          }
-        }
-      };
-      const response = await verifyPresentation(authToken, data.encryptedPresentation, verifier.verifierDid, verifier.encryptionPrivateKey, requestInfo);
+      const response = await verifyPresentation(authToken, data.encryptedPresentation, verifier.verifierDid, verifier.encryptionPrivateKey, data.presentationRequestInfo);
       const result: DecryptedPresentation = response.body;
 
       logger.info(`response from server sdk ${JSON.stringify(result)}`);
