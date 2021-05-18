@@ -27,8 +27,8 @@ export const validateData: Hook<WithVersion<EncryptedPresentation>> = (ctx) => {
     throw new BadRequest('version header must be in valid semver notation.');
   }
 
-  if (lt(params.headers.version, '2.0.0')) {
-    throw new BadRequest('version header must be greater than 2.0.0 for the presentationV2 service.');
+  if (lt(params.headers.version, '3.0.0')) {
+    throw new BadRequest('version header must be 3.x.x for the presentationV3 service.');
   }
 
   data.version = params.headers.version;

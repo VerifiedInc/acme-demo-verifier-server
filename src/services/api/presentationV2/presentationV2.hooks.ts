@@ -28,7 +28,7 @@ export const validateData: Hook<WithVersion<EncryptedPresentation>> = (ctx) => {
   }
 
   if (lt(params.headers.version, '2.0.0')) {
-    throw new BadRequest('version header must be greater than 2.0.0 for the presentationV2 service.');
+    throw new BadRequest('version header must be 2.x.x for the presentationV2 service.');
   }
 
   data.version = params.headers.version;
