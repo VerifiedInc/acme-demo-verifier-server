@@ -12,7 +12,7 @@ import session from './api/session/session.service';
 import verifier from './api/verifier/verifier.service';
 import presentationRequest from './api/presentationRequest/presentationRequest.service';
 import presentationV2 from './api/presentationV2/presentationV2.service';
-import presentationV3 from './api/presentationV2/presentationV3.service';
+import presentationV3 from './api/presentationV3/presentationV3.service';
 import email from './api/email/email.service';
 import sms from './api/sms/sms.service';
 

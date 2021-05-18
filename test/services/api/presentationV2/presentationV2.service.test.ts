@@ -6,7 +6,7 @@ import presentationService from '../../../../src/services/api/presentationV2/pre
 describe('initializing the presentation V2 service', () => {
   it('registers with the app', async () => {
     const app = await generateApp();
-    const service = app.service('presentation');
+    const service = app.service('presentationV2');
     expect(service).toBeDefined();
   });
 

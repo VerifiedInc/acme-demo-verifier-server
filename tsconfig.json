@@ -8,7 +8,8 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "sourceMap": true,
-    "declaration": true
+    "declaration": true,
+    "moduleResolution": "node"            /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
   },
   "exclude": [
     "test"

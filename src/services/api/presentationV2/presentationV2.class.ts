@@ -1,6 +1,5 @@
 import { Params } from '@feathersjs/feathers';
-// import { EncryptedPresentation, Presentation, PresentationReceiptInfo, VerificationResponse, WithVersion } from '@unumid/types-deprecated-v2';
-import { EncryptedPresentation, Presentation, PresentationReceiptInfo, VerificationResponse, WithVersion } from '../../../../node_modules/@unumid/types-deprecated-v2';
+import { EncryptedPresentation, Presentation, PresentationReceiptInfo, VerificationResponse, WithVersion } from '@unumid/types-deprecated-v2';
 import { Service as MikroOrmService } from 'feathers-mikro-orm';
 
 import { Application } from '../../../declarations';
@@ -85,20 +84,7 @@ export class PresentationServiceV2 {
       // Needed to roll over the old attribute value that wasn't storing the Bearer as part of the token. Ought to remove once the roll over is complete. Figured simple to enough to just handle in app code.
       const authToken = verifier.authToken.startsWith('Bearer ') ? verifier.authToken : `Bearer ${verifier.authToken}`;
 
-      const requestInfo = {
-        ...data.presentationRequestInfo,
-        presentationRequestInfo: {
-          ...data.presentationRequestInfo.presentationRequest,
-          presentationRequest: {
-            ...data.presentationRequestInfo.presentationRequest,
-            proof: {
-              ...data.presentationRequestInfo.presentationRequest.proof,
-              created: data.presentationRequestInfo.presentationRequest.proof.created as string
-            }
-          }
-        }
-      };
-      const response = await verifyPresentation(authToken, data.encryptedPresentation, verifier.verifierDid, verifier.encryptionPrivateKey, requestInfo);
+      const response = await verifyPresentation(authToken, data.encryptedPresentation, verifier.verifierDid, verifier.encryptionPrivateKey, data.presentationRequestInfo);
       const result: DecryptedPresentation = response.body;
 
       logger.info(`response from server sdk ${JSON.stringify(result)}`);

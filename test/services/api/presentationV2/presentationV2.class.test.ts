@@ -1,6 +1,6 @@
 import { PresentationServiceV2 as PresentationService } from '../../../../src/services/api/presentationV2/presentationV2.class';
 import { Application } from '../../../../src/declarations';
-import * as serverSdk from '@unumid/server-sdk';
+import * as serverSdk from '@unumid/server-sdk-deprecated-v2';
 import { CryptoError } from '@unumid/library-crypto';
 
 import {
@@ -18,8 +18,8 @@ import {
   dummyDeclinedPresentation
 } from '../../../mocksV2';
 
-import { Presentation, PresentationReceiptInfo, VerificationResponse } from '@unumid/types';
-import { CredentialInfo, extractCredentialInfo } from '@unumid/server-sdk';
+import { Presentation, PresentationReceiptInfo, VerificationResponse } from '@unumid/types-deprecated-v2';
+import { CredentialInfo, extractCredentialInfo } from '@unumid/server-sdk-deprecated-v2';
 import { PresentationEntityOptions } from '../../../../src/entities/Presentation';
 
 import logger from '../../../../src/logger';
