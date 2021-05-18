@@ -192,12 +192,21 @@ export class PresentationService {
         logger.info(`Handled encrypted presentation of type ${result.type}${result.type === 'VerifiablePresentation' ? ` with credentials [${credentialInfo.credentialTypes}]` : ''} for subject ${credentialInfo.subjectDid}`);
 
         return { isVerified: true, type: result.type, presentationReceiptInfo, presentationRequestUuid: data.presentationRequestInfo.presentationRequest.uuid };
-      } else { // request was made with version header 2.0.0+, use the V2 service
+      } else if (lt(data.version, '3.0.0')) { // request was made with version header 2.0.0+, use the V2 service
         const newParams = {
           ...params,
           headers: { ...params?.headers, version: data.version }
         };
         return await (presentationServiceV2.create(data, newParams) as Promise<VerificationResponse>);
+      } else if (lt(data.version, '4.0.0')) {
+        const newParams = {
+          ...params,
+          headers: { ...params?.headers, version: data.version }
+        };
+        return await (presentationServiceV2.create(data, newParams) as Promise<VerificationResponse>);
+      } else {
+        logger.error(`Request made with unsupported api version ${data.version}.`);
+        throw new BadRequest(`Api version ${data.version} not supported.`);
       }
     } catch (error) {
       if (error instanceof CryptoError) {
