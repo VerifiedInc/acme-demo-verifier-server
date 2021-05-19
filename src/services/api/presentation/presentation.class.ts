@@ -123,6 +123,7 @@ export class PresentationService {
       const presentationRequest: PresentationRequestEntity = await presentationRequestService.findOne({ prUuid: data.presentationRequestInfo.presentationRequest.uuid });
       const presentationWebsocketService = this.app.service('presentationWebsocket');
       const presentationServiceV2 = this.app.service('presentationV2');
+      // const presentationServiceV3 = this.app.service('presentationV3');
 
       if (!presentationRequest) {
         throw new NotFound('PresentationRequest not found.');
@@ -199,11 +200,13 @@ export class PresentationService {
         };
         return await (presentationServiceV2.create(data, newParams) as Promise<VerificationResponse>);
       } else if (lt(data.version, '4.0.0')) {
-        const newParams = {
-          ...params,
-          headers: { ...params?.headers, version: data.version }
-        };
-        return await (presentationServiceV2.create(data, newParams) as Promise<VerificationResponse>);
+        // const newParams = {
+        //   ...params,
+        //   headers: { ...params?.headers, version: data.version }
+        // };
+        // return await (presentationServiceV3.create(data, newParams) as Promise<VerificationResponse>);
+        logger.error('If one wants to hit presentation service with version 3.0.0 hit the service directly, /presentationV3.');
+        throw new BadRequest('If one wants to hit presentation service with version 3.0.0 hit the service directly, /presentationV3.');
       } else {
         logger.error(`Request made with unsupported api version ${data.version}.`);
         throw new BadRequest(`Api version ${data.version} not supported.`);
