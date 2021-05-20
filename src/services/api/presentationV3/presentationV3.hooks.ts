@@ -15,10 +15,6 @@ export const validateData: Hook<WithVersion<EncryptedPresentation>> = (ctx) => {
     throw new BadRequest('presentationRequestInfo is required.');
   }
 
-  if (!data.encryptedPresentation) {
-    throw new BadRequest('encryptedPresentation is required.');
-  }
-
   // TODO properly check the presentationRequestInfo body
 
   // Note: This is only necessary for now because still using http / json... if ever moved to grpc and native protobufs this won't be need.
@@ -47,6 +43,10 @@ export const validateData: Hook<WithVersion<EncryptedPresentation>> = (ctx) => {
 
   if (lt(params.headers.version, '3.0.0')) {
     throw new BadRequest('version header must be 3.x.x for the presentationV3 service.');
+  }
+
+  if (!data.encryptedPresentation) {
+    throw new BadRequest('encryptedPresentation is required.');
   }
 
   data.version = params.headers.version;
