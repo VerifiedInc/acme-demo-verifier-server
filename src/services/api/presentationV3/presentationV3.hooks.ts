@@ -19,6 +19,24 @@ export const validateData: Hook<WithVersion<EncryptedPresentation>> = (ctx) => {
     throw new BadRequest('encryptedPresentation is required.');
   }
 
+  // TODO properly check the presentationRequestInfo body
+
+  // Note: This is only necessary for now because still using http / json... if ever moved to grpc and native protobufs this won't be need.
+  // convert the date string to actual date types
+  if (data.presentationRequestInfo.presentationRequest &&
+    data.presentationRequestInfo.presentationRequest.createdAt &&
+    data.presentationRequestInfo.presentationRequest.expiresAt &&
+    data.presentationRequestInfo.presentationRequest.updatedAt) {
+    data.presentationRequestInfo.presentationRequest.createdAt = new Date(data.presentationRequestInfo.presentationRequest.createdAt);
+    data.presentationRequestInfo.presentationRequest.expiresAt = new Date(data.presentationRequestInfo.presentationRequest.expiresAt);
+    data.presentationRequestInfo.presentationRequest.updatedAt = new Date(data.presentationRequestInfo.presentationRequest.updatedAt);
+  }
+
+  if (data.presentationRequestInfo.presentationRequest &&
+    !data.presentationRequestInfo.presentationRequest.metadata) {
+    data.presentationRequestInfo.presentationRequest.metadata = undefined;
+  }
+
   if (!params.headers || !params.headers.version) {
     throw new BadRequest('version header is required.');
   }

@@ -9,7 +9,7 @@ export const presentationPublisher = (app: Application) => async (data: any, hoo
   logger.debug(`in presentation websocket publisher grabbing session metadata via presentation request ${prUuid}`);
 
   const presentationRequest = await app.service('presentationRequestData').get(null, { where: { prUuid } });
-  if (presentationRequest) {
+  if (presentationRequest && presentationRequest.prMetadata) {
     // tells the socket handler which persisted connection to response to
     return app.channel(presentationRequest.prMetadata.sessionUuid);
   }

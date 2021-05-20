@@ -51,7 +51,7 @@ export class PresentationRequestEntity extends BaseEntity {
   prProof: Proof;
 
   @Property()
-  prMetadata: Record<string, any>;
+  prMetadata?: Record<string, any>;
 
   @Property()
   prHolderAppUuid: string;

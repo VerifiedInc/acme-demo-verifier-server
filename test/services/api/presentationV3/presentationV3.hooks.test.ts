@@ -63,10 +63,25 @@ describe('presentation v3 service hooks', () => {
           expect(e).toEqual(new BadRequest('version header must be 3.x.x for the presentationV3 service.'));
         }
       });
+
+      it('throws a BadRequest if version header is missing', () => {
+        const ctx = {
+          data: omit(dummyEncryptedPresentation, 'encryptedPresentation'),
+          params: { headers: {} }
+        } as HookContext;
+
+        try {
+          validateData(ctx);
+          fail();
+        } catch (e) {
+          expect(e).toEqual(new BadRequest('version header is required.'));
+        }
+      });
+
       it('throws a BadRequest if presentationRequestInfo is missing', () => {
         const ctx = {
           data: omit(dummyEncryptedPresentation, 'presentationRequestInfo'),
-          params: {}
+          params: { headers: { version: '3.0.0' } }
         } as HookContext;
 
         try {
@@ -80,7 +95,7 @@ describe('presentation v3 service hooks', () => {
       it('throws a BadRequest if encryptedPresentation is missing', () => {
         const ctx = {
           data: omit(dummyEncryptedPresentation, 'encryptedPresentation'),
-          params: {}
+          params: { headers: { version: '3.0.0' } }
         } as HookContext;
 
         try {
