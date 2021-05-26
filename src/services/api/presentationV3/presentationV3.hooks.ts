@@ -28,10 +28,11 @@ export const validateData: Hook<WithVersion<EncryptedPresentation>> = (ctx) => {
     data.presentationRequestInfo.presentationRequest.updatedAt = new Date(data.presentationRequestInfo.presentationRequest.updatedAt);
   }
 
-  if (data.presentationRequestInfo.presentationRequest &&
-    !data.presentationRequestInfo.presentationRequest.metadata) {
-    data.presentationRequestInfo.presentationRequest.metadata = undefined;
-  }
+  // HACK ALERT converting to the metadata attribute to a string to appease proto buf types
+  // if (data.presentationRequestInfo.presentationRequest &&
+  //   data.presentationRequestInfo.presentationRequest.metadata) {
+  //   data.presentationRequestInfo.presentationRequest.metadata = JSON.stringify(data.presentationRequestInfo.presentationRequest.metadata);
+  // }
 
   if (!params.headers || !params.headers.version) {
     throw new BadRequest('version header is required.');

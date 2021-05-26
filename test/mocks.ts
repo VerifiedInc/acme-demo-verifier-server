@@ -214,7 +214,7 @@ export const dummyPresentationRequestPostDto: PresentationRequestPostDto = {
       verificationMethod: dummyVerifierDidWithHash,
       proofPurpose: 'assertionMethod'
     },
-    metadata: { sessionUuid: dummySession.uuid },
+    metadata: { fields: { sessionUuid: dummySession.uuid } },
     holderAppUuid: dummyHolderAppUuid
   },
   verifier: {
