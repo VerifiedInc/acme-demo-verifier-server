@@ -11,6 +11,7 @@ import { BaseEntity, BaseEntityOptions } from './BaseEntity';
 
 export interface PresentationRequestEntityOptions extends BaseEntityOptions {
   prUuid: string;
+  prId: string;
   prCreatedAt: Date;
   prUpdatedAt: Date;
   prExpiresAt?: Date;
@@ -31,6 +32,9 @@ export class PresentationRequestEntity extends BaseEntity {
   @Property()
   @Index()
   prUuid: string;
+
+  @Property()
+  prId: string;
 
   @Property({ columnType: 'timestamptz(6)' })
   prCreatedAt: Date;
@@ -76,6 +80,7 @@ export class PresentationRequestEntity extends BaseEntity {
 
     const {
       prUuid,
+      prId,
       prCreatedAt,
       prUpdatedAt,
       prExpiresAt,
@@ -92,6 +97,7 @@ export class PresentationRequestEntity extends BaseEntity {
     } = options;
 
     this.prUuid = prUuid;
+    this.prId = prId;
     this.prCreatedAt = prCreatedAt;
     this.prUpdatedAt = prUpdatedAt;
     this.prExpiresAt = prExpiresAt;
