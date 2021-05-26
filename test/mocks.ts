@@ -146,6 +146,7 @@ export const dummyVerifierResponseDto: VerifierResponseDto = {
 };
 
 export const dummyPresentationRequestUuid = v4();
+export const dummyPresentationRequestId = v4();
 export const dummyVerifierDidWithHash = `${dummyVerifierDid}#${v4()}`;
 export const dummyHolderAppUuid = v4();
 
@@ -160,6 +161,7 @@ export const dummySession = new Session({});
 
 export const dummyPresentationRequestEntityOptions: PresentationRequestEntityOptions = {
   prUuid: dummyPresentationRequestUuid,
+  prId: dummyPresentationRequestId,
   prCreatedAt: now,
   prUpdatedAt: now,
   prExpiresAt: tenMinutesFromNow,
@@ -198,6 +200,7 @@ export const dummyPresentationRequestEntity = new PresentationRequestEntity(dumm
 export const dummyPresentationRequestPostDto: PresentationRequestPostDto = {
   presentationRequest: {
     uuid: dummyPresentationRequestUuid,
+    id: dummyPresentationRequestId,
     createdAt: now,
     updatedAt: now,
     expiresAt: tenMinutesFromNow,
