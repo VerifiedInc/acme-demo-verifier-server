@@ -176,7 +176,7 @@ export const dummyPresentationRequestEntityOptions: PresentationRequestEntityOpt
     verificationMethod: dummyVerifierDidWithHash,
     proofPurpose: 'assertionMethod'
   },
-  prMetadata: { sessionUuid: dummySession.uuid },
+  prMetadata: { fields: { sessionUuid: dummySession.uuid } },
   prHolderAppUuid: dummyHolderAppUuid,
   prVerifierInfo: {
     name: dummyVerifierEntityOptions.verifierName,
