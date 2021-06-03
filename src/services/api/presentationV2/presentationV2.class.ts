@@ -1,5 +1,5 @@
 import { Params } from '@feathersjs/feathers';
-import { EncryptedPresentation, Presentation, PresentationReceiptInfo, VerificationResponse, WithVersion } from '@unumid/types-deprecated-v2';
+import { EncryptedPresentation, Presentation, PresentationReceiptInfo, VerificationResponse, WithVersion, PresentationRequestDto, PresentationRequest } from '@unumid/types-deprecated-v2';
 import { Service as MikroOrmService } from 'feathers-mikro-orm';
 
 import { Application } from '../../../declarations';
@@ -9,6 +9,7 @@ import { BadRequest, NotFound } from '@feathersjs/errors';
 import { PresentationRequestEntity } from '../../../entities/PresentationRequest';
 import { CryptoError } from '@unumid/library-crypto';
 import { CredentialInfo, DecryptedPresentation, extractCredentialInfo, verifyPresentation } from '@unumid/server-sdk-deprecated-v2';
+import { omit } from 'lodash';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ServiceOptions { }
@@ -84,6 +85,12 @@ export class PresentationServiceV2 {
       // Needed to roll over the old attribute value that wasn't storing the Bearer as part of the token. Ought to remove once the roll over is complete. Figured simple to enough to just handle in app code.
       const authToken = verifier.authToken.startsWith('Bearer ') ? verifier.authToken : `Bearer ${verifier.authToken}`;
 
+      // const presentationRequestWithoutVersion: PresentationRequest = omit(data.presentationRequestInfo.presentationRequest, 'version');
+      // const presentationRequestDtoWithoutVersion: PresentationRequestDto = {
+      //   ...data.presentationRequestInfo,
+      //   presentationRequest: presentationRequestWithoutVersion
+      // };
+      // const response = await verifyPresentation(authToken, data.encryptedPresentation, verifier.verifierDid, verifier.encryptionPrivateKey, presentationRequestDtoWithoutVersion);
       const response = await verifyPresentation(authToken, data.encryptedPresentation, verifier.verifierDid, verifier.encryptionPrivateKey, data.presentationRequestInfo);
       const result: DecryptedPresentation = response.body;
 
@@ -136,7 +143,7 @@ export class PresentationServiceV2 {
       if (error instanceof CryptoError) {
         logger.error('Crypto error handling encrypted presentation', error);
       } else {
-        logger.error('Error handling encrypted presentation request to UnumID Saas.', error);
+        logger.error('Error handling encrypted presentation to UnumID Saas.', error);
       }
 
       throw error;

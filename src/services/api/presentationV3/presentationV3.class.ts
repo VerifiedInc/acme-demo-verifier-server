@@ -137,7 +137,7 @@ export class PresentationServiceV3 {
       if (error instanceof CryptoError) {
         logger.error('Crypto error handling encrypted presentation', error);
       } else {
-        logger.error('Error handling encrypted presentation request to UnumID Saas.', error);
+        logger.error('Error handling encrypted presentation to UnumID Saas.', error);
       }
 
       throw error;
