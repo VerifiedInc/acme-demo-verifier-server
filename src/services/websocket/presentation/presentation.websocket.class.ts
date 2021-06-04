@@ -5,7 +5,6 @@ import { Service as MikroOrmService } from 'feathers-mikro-orm';
 import { Application } from '../../../declarations';
 import { NoPresentationEntity } from '../../../entities/NoPresentation';
 import { PresentationEntity } from '../../../entities/Presentation';
-// import { DemoNoPresentationDto as DemoNoPresentationDtoDeprecated, DemoPresentationDto as DemoPresentationDtoDeprecated } from '@unumid/demo-types-deprecated-v1';
 import { DemoPresentationDto as DemoPresentationDtoDeprecated } from '@unumid/demo-types-deprecated-v2';
 import { DemoPresentationDto } from '@unumid/demo-types';
 import { lt } from 'semver';
@@ -62,32 +61,6 @@ const makeDemoPresentationDtoFromEntity = (entity: WithVersion<PresentationEntit
   };
 };
 
-// const makeDemoNoPresentationDtoFromEntity = (entity: NoPresentationEntity): DemoNoPresentationDtoDeprecated => {
-//   const {
-//     uuid,
-//     createdAt,
-//     updatedAt,
-//     npType,
-//     npProof,
-//     npHolder,
-//     npPresentationRequestUuid,
-//     isVerified
-//   } = entity;
-
-//   return {
-//     uuid,
-//     createdAt,
-//     updatedAt,
-//     noPresentation: {
-//       type: npType,
-//       proof: npProof,
-//       holder: npHolder,
-//       presentationRequestUuid: npPresentationRequestUuid
-//     },
-//     isVerified
-//   };
-// };
-
 export class PresentationService {
     app: Application;
     options: ServiceOptions;
@@ -105,16 +78,6 @@ export class PresentationService {
       data: WithVersion<PresentationEntity> | NoPresentationEntity,
       params?: Params
     ): Promise<DemoPresentationDto | DemoPresentationDtoDeprecated> {
-      // let response: DemoPresentationDto | DemoPresentationDtoDeprecated;
-
-      // // checking wether we are dealing with a Presentation or NoPresentation entity
-      // if ((data as PresentationEntity).presentationType && (data as PresentationEntity).presentationType.includes('VerifiablePresentation')) {
-      //   // TODO: need to check what pres type it is then do one dep demo dto and one not dep demo dto.
-      //   response = makeDemoPresentationDtoFromEntity(data as WithVersion<PresentationEntity>);
-      // } else {
-      //   response = makeDemoNoPresentationDtoFromEntity(data as NoPresentationEntity);
-      // }
-
       const response: DemoPresentationDto | DemoPresentationDtoDeprecated = makeDemoPresentationDtoFromEntity(data as WithVersion<PresentationEntity>);
 
       return response;

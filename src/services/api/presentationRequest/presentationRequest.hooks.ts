@@ -51,10 +51,6 @@ export const sendRequestHook: Hook<SendRequestHookData> = async (ctx) => {
 
   const { credentialRequests, metadata } = ctx.data;
 
-  // if (metadata) {
-  //   metadata = JSON.parse(metadata);
-  // }
-
   const { uuid, verifierDid, authToken, signingPrivateKey } = await ctx.app.service('verifierData').getDefaultVerifierEntity();
 
   let response;
@@ -67,9 +63,7 @@ export const sendRequestHook: Hook<SendRequestHookData> = async (ctx) => {
       signingPrivateKey,
       config.HOLDER_APP_UUID,
       undefined,
-      // { fields: {} }
       metadata
-      // { sessionUuid: '2f4e933b-a2ff-48ac-90c9-b2651cf643d8' }
     );
   } catch (e) {
     logger.error('sendRequestHook caught an error thrown by the server sdk', e);

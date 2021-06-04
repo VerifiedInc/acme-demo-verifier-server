@@ -85,12 +85,6 @@ export class PresentationServiceV2 {
       // Needed to roll over the old attribute value that wasn't storing the Bearer as part of the token. Ought to remove once the roll over is complete. Figured simple to enough to just handle in app code.
       const authToken = verifier.authToken.startsWith('Bearer ') ? verifier.authToken : `Bearer ${verifier.authToken}`;
 
-      // const presentationRequestWithoutVersion: PresentationRequest = omit(data.presentationRequestInfo.presentationRequest, 'version');
-      // const presentationRequestDtoWithoutVersion: PresentationRequestDto = {
-      //   ...data.presentationRequestInfo,
-      //   presentationRequest: presentationRequestWithoutVersion
-      // };
-      // const response = await verifyPresentation(authToken, data.encryptedPresentation, verifier.verifierDid, verifier.encryptionPrivateKey, presentationRequestDtoWithoutVersion);
       const response = await verifyPresentation(authToken, data.encryptedPresentation, verifier.verifierDid, verifier.encryptionPrivateKey, data.presentationRequestInfo);
       const result: DecryptedPresentation = response.body;
 

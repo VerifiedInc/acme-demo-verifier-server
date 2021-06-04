@@ -199,11 +199,6 @@ export class PresentationService {
         };
         return await (presentationServiceV2.create(data, newParams) as Promise<VerificationResponse>);
       } else if (lt(data.version, '4.0.0')) {
-        // const newParams = {
-        //   ...params,
-        //   headers: { ...params?.headers, version: data.version }
-        // };
-        // return await (presentationServiceV3.create(data, newParams) as Promise<VerificationResponse>);
         logger.error('If one wants to hit presentation service with version 3.0.0 hit the service directly, /presentationV3.');
         throw new BadRequest('If one wants to hit presentation service with version 3.0.0 hit the service directly, /presentationV3.');
       } else {
