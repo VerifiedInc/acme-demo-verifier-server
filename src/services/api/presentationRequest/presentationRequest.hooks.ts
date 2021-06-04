@@ -1,6 +1,6 @@
 import { Hook } from '@feathersjs/feathers';
 import { BadRequest, GeneralError } from '@feathersjs/errors';
-import { sendRequest } from '@unumid/server-sdk';
+import { sendRequest, UnumDto, SendRequestResult } from '@unumid/server-sdk';
 import { PresentationRequestPostDto } from '@unumid/types';
 import { DemoPresentationRequestCreateOptions } from '@unumid/demo-types';
 
@@ -35,7 +35,8 @@ export const validatePresentationRequestOptions: Hook<DemoPresentationRequestCre
   ctx.params.isValidated = true;
 };
 
-type SendRequestHookData = DemoPresentationRequestCreateOptions | PresentationRequestPostDto;
+// type SendRequestHookData = DemoPresentationRequestCreateOptions | PresentationRequestPostDto;
+type SendRequestHookData = DemoPresentationRequestCreateOptions | SendRequestResult[];
 
 const isDemoPresentationRequestCreateOptions = (obj: any): obj is DemoPresentationRequestCreateOptions =>
   !!obj.credentialRequests;
@@ -53,7 +54,8 @@ export const sendRequestHook: Hook<SendRequestHookData> = async (ctx) => {
 
   const { uuid, verifierDid, authToken, signingPrivateKey } = await ctx.app.service('verifierData').getDefaultVerifierEntity();
 
-  let response;
+  let response: UnumDto<SendRequestResult[]>;
+  // let response;
 
   try {
     response = await sendRequest(
@@ -80,13 +82,14 @@ export const sendRequestHook: Hook<SendRequestHookData> = async (ctx) => {
   }
 
   // TODO remove this necessary workaround this until we phase out needing to supporting verifier.url attribute in the PresentationRequestPostDto type (no longer needed thanks to presentation always being sent to directly to saas)
-  ctx.data = {
-    ...response.body,
-    verifier: {
-      ...response.body.verifier,
-      url: response.body.verifier.url as string
-    }
-  };
+  // ctx.data = {
+  //   ...response.body,
+  //   verifier: {
+  //     ...response.body.verifier,
+  //     url: response.body.verifier.url as string
+  //   }
+  // };
+  ctx.data = response.body;
 };
 
 export const hooks = {

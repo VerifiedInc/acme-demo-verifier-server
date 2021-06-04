@@ -34,7 +34,7 @@ export class PresentationRequestEntity extends BaseEntity {
   prUuid: string;
 
   @Property()
-  prId: string;
+  prId?: string;
 
   @Property({ columnType: 'timestamptz(6)' })
   prCreatedAt: Date;
