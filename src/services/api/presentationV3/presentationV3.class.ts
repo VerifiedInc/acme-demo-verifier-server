@@ -1,5 +1,5 @@
 import { Params } from '@feathersjs/feathers';
-import { EncryptedPresentation, Presentation, PresentationReceiptInfo, VerificationResponse, WithVersion } from '@unumid/types';
+import { EncryptedPresentation, Presentation, PresentationPb, PresentationReceiptInfo, Proof, VerificationResponse, WithVersion, Credential } from '@unumid/types';
 import { Presentation as PresentationDeprecated } from '@unumid/types-deprecated-v1';
 import { Service as MikroOrmService } from 'feathers-mikro-orm';
 
@@ -23,21 +23,26 @@ const makePresentationEntityOptionsFromPresentation = (
   { presentation, isVerified }: PresentationWithVerification
 ): PresentationEntityOptions => {
   const {
-    '@context': presentationContext,
+    // context: presentationContext,
     type: presentationType,
     proof: presentationProof,
     presentationRequestUuid: presentationPresentationRequestUuid,
     verifierDid
   } = presentation;
 
-  const presentationVerifiableCredentials = presentation.verifiableCredential ? presentation.verifiableCredential : [];
+  const presContext = (presentation as unknown as PresentationPb).context as ['https://www.w3.org/2018/credentials/v1', ...string[]];
+  // const presType = presentation.type as ['VerifiablePresentation', ...string[]];
+  // const presProof = presentation.proof as any as Proof;
+
+  const presentationVerifiableCredentials = presentation.verifiableCredential ? presentation.verifiableCredential as any as Credential[] : [];
 
   return {
-    presentationContext,
+    presentationContext: presContext,
     presentationType,
     presentationVerifiableCredentials,
     presentationProof,
-    presentationPresentationRequestUuid,
+    // presentationPresentationRequestUuid,
+    presentationPresentationRequestId: '2971f495-387b-4d24-ab0b-9ea3bbc6a543',
     isVerified,
     verifierDid
   };
@@ -54,8 +59,9 @@ export class PresentationServiceV3 {
     this.presentationDataService = app.service('presentationData');
   }
 
-  async createPresentationEntity (presentation: DecryptedPresentation, params?: Params): Promise<PresentationEntity> {
-    const decryptedPresentation: Presentation = presentation.presentation as PresentationDeprecated;
+  // async createPresentationEntity (presentation: DecryptedPresentation, params?: Params): Promise<PresentationEntity> {
+  async createPresentationEntity (presentation: DecryptedPresentation, params?: Params, presentationRequestId?: string): Promise<PresentationEntity> {
+    const decryptedPresentation: Presentation = presentation.presentation as Presentation;
     const presentationWithVerification: PresentationWithVerification = { isVerified: presentation.isVerified, presentation: decryptedPresentation };
     const options = makePresentationEntityOptionsFromPresentation(presentationWithVerification);
     try {
@@ -94,16 +100,17 @@ export class PresentationServiceV3 {
       await verifierDataService.patch(verifier.uuid, { authToken: response.authToken });
 
       // return early if the presentation could not be verified
-      if (!result.isVerified) {
-        logger.warn(`Presentation verification failed: ${result.message}`);
-        throw new BadRequest(`Verification failed: ${result.message ? result.message : ''}`);
-      }
+      // if (!result.isVerified) {
+      //   logger.warn(`Presentation verification failed: ${result.message}`);
+      //   throw new BadRequest(`Verification failed: ${result.message ? result.message : ''}`);
+      // }
 
       if (result.type === 'VerifiablePresentation') {
         try {
           // Persist the Presentation entity and add the version for the websocket handler
           const entity = {
-            ...await this.createPresentationEntity(result, params),
+            // ...await this.createPresentationEntity(result, params),
+            ...await this.createPresentationEntity(result, params, data.presentationRequestInfo.presentationRequest.id),
             version: data.version
           };
 
@@ -137,7 +144,7 @@ export class PresentationServiceV3 {
       if (error instanceof CryptoError) {
         logger.error('Crypto error handling encrypted presentation', error);
       } else {
-        logger.error('Error handling encrypted presentation to UnumID Saas.', error);
+        logger.error('Error handling encrypted presentation from UnumID Saas.', error);
       }
 
       throw error;

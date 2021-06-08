@@ -9,7 +9,6 @@ import { BadRequest, NotFound } from '@feathersjs/errors';
 import { PresentationRequestEntity } from '../../../entities/PresentationRequest';
 import { CryptoError } from '@unumid/library-crypto';
 import { CredentialInfo, DecryptedPresentation, extractCredentialInfo, verifyPresentation } from '@unumid/server-sdk-deprecated-v2';
-import { omit } from 'lodash';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ServiceOptions { }
@@ -37,7 +36,8 @@ const makePresentationEntityOptionsFromPresentation = (
     presentationType,
     presentationVerifiableCredentials,
     presentationProof,
-    presentationPresentationRequestUuid,
+    // presentationPresentationRequestUuid,
+    presentationPresentationRequestId: '2971f495-387b-4d24-ab0b-9ea3bbc6a543',
     isVerified,
     verifierDid
   };
@@ -137,7 +137,7 @@ export class PresentationServiceV2 {
       if (error instanceof CryptoError) {
         logger.error('Crypto error handling encrypted presentation', error);
       } else {
-        logger.error('Error handling encrypted presentation to UnumID Saas.', error);
+        logger.error('Error handling encrypted presentation from UnumID Saas.', error);
       }
 
       throw error;
