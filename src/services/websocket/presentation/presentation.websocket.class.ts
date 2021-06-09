@@ -21,7 +21,6 @@ const makeDemoPresentationDtoFromEntity = (entity: WithVersion<PresentationEntit
     presentationType,
     presentationVerifiableCredentials,
     presentationProof,
-    // presentationPresentationRequestUuid,
     presentationPresentationRequestId,
     isVerified,
     verifierDid
@@ -39,7 +38,6 @@ const makeDemoPresentationDtoFromEntity = (entity: WithVersion<PresentationEntit
         verifiableCredential: presentationVerifiableCredentials,
         verifierDid,
         proof: presentationProof,
-        // presentationRequestUuid: presentationPresentationRequestUuid
         presentationRequestId: presentationPresentationRequestId
       },
       isVerified
@@ -57,7 +55,6 @@ const makeDemoPresentationDtoFromEntity = (entity: WithVersion<PresentationEntit
       verifiableCredential: presentationVerifiableCredentials,
       verifierDid,
       proof: presentationProof,
-      // presentationRequestUuid: presentationPresentationRequestUuid
       presentationRequestId: presentationPresentationRequestId
     },
     isVerified

@@ -23,27 +23,21 @@ const makePresentationEntityOptionsFromPresentation = (
   { presentation, isVerified }: PresentationWithVerification
 ): PresentationEntityOptions => {
   const {
-    // context: presentationContext,
-    type: presentationType,
-    proof: presentationProof,
     presentationRequestId: presentationPresentationRequestId,
     verifierDid
   } = presentation;
 
-  // const presContext = (presentation as unknown as PresentationPb).context as ['https://www.w3.org/2018/credentials/v1', ...string[]];
-  const presContext = presentation.context as ['https://www.w3.org/2018/credentials/v1', ...string[]];
-  const presType = presentation.type as ['VerifiablePresentation', ...string[]];
-  const presProof = presentation.proof as any as Proof;
-
+  // HACK ALERT: having to appease the typescript type due to the crypto, Protobuf PresentationPb type not fully aligning with the Typescript Presentation type def.
+  const presentationContext = presentation.context as ['https://www.w3.org/2018/credentials/v1', ...string[]];
+  const presentationType = presentation.type as ['VerifiablePresentation', ...string[]];
+  const presentationProof = presentation.proof as any as Proof;
   const presentationVerifiableCredentials = presentation.verifiableCredential ? presentation.verifiableCredential as any as Credential[] : [];
 
   return {
-    presentationContext: presContext,
-    presentationType: presType,
+    presentationContext,
+    presentationType,
     presentationVerifiableCredentials,
-    presentationProof: presProof,
-    // presentationPresentationRequestUuid,
-    // presentationPresentationRequestId: '2971f495-387b-4d24-ab0b-9ea3bbc6a543',
+    presentationProof,
     presentationPresentationRequestId,
     isVerified,
     verifierDid
@@ -61,7 +55,6 @@ export class PresentationServiceV3 {
     this.presentationDataService = app.service('presentationData');
   }
 
-  // async createPresentationEntity (presentation: DecryptedPresentation, params?: Params): Promise<PresentationEntity> {
   async createPresentationEntity (presentation: DecryptedPresentation, params?: Params): Promise<PresentationEntity> {
     const decryptedPresentation: PresentationPb = presentation.presentation as PresentationPb;
     const presentationWithVerification: PresentationWithVerification = { isVerified: presentation.isVerified, presentation: decryptedPresentation };
@@ -112,7 +105,6 @@ export class PresentationServiceV3 {
           // Persist the Presentation entity and add the version for the websocket handler
           const entity = {
             ...await this.createPresentationEntity(result, params),
-            // ...await this.createPresentationEntity(result, params, data.presentationRequestInfo.presentationRequest.id),
             version: data.version
           };
 
