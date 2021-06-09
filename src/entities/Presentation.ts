@@ -30,9 +30,6 @@ export class PresentationEntity extends BaseEntity {
   @Property()
   presentationPresentationRequestId: string;
 
-  // @Property()
-  // presentationPresentationRequestId: string;
-
   @Property()
   isVerified: boolean;
 

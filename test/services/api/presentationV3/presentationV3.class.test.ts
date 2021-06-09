@@ -17,13 +17,14 @@ import {
   mockVerifiedEncryptedDeclinedPresentation,
   mockNotVerifiedEncryptedDeclinedPresentation,
   dummyDeclinedPresentation
-} from '../../../mocksV2';
+} from '../../../mocksV3';
 
 import { CredentialInfo, extractCredentialInfo } from '@unumid/server-sdk';
 import { PresentationEntityOptions } from '../../../../src/entities/Presentation';
 
 import logger from '../../../../src/logger';
 import { BadRequest } from '@feathersjs/errors';
+import { Proof } from '@unumid/types/build/protos/proof';
 
 describe('PresentationServiceV3', () => {
   let service: PresentationService;
@@ -68,11 +69,11 @@ describe('PresentationServiceV3', () => {
       expect(mockDataService.patch).toBeCalled();
 
       const expectedPresentationEntityOptions: PresentationEntityOptions = {
-        presentationContext: dummyPresentation['@context'],
-        presentationType: dummyPresentation.type,
-        presentationVerifiableCredentials: dummyPresentation.verifiableCredential as Credential[],
-        presentationProof: dummyPresentation.proof,
-        presentationPresentationRequestUuid: dummyPresentation.presentationRequestUuid,
+        presentationContext: dummyPresentation.context as ['https://www.w3.org/2018/credentials/v1', ...string[]],
+        presentationType: dummyPresentation.type as ['VerifiablePresentation', ...string[]],
+        presentationVerifiableCredentials: dummyPresentation.verifiableCredential as unknown as Credential[],
+        presentationProof: dummyPresentation.proof as unknown as Proof,
+        presentationPresentationRequestId: dummyPresentation.presentationRequestId,
         isVerified: true,
         verifierDid: dummyVerifierDid
       };
@@ -87,7 +88,7 @@ describe('PresentationServiceV3', () => {
         verifierDid: dummyVerifierEntity.verifierDid,
         holderApp: dummyPresentationRequestEntity.prHolderAppUuid,
         issuers: dummyPresentationRequestEntity.prIssuerInfo,
-        presentationRequestUuid: dummyPresentation.presentationRequestUuid
+        presentationRequestUuid: dummyEncryptedPresentation.presentationRequestInfo.presentationRequest.uuid
       };
 
       const expectedVerificationResponse: VerificationResponse = {
