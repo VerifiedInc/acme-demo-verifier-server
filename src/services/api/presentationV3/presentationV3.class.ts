@@ -15,7 +15,7 @@ import { CredentialInfo, DecryptedPresentation, extractCredentialInfo, verifyPre
 interface ServiceOptions { }
 
 export interface PresentationWithVerification {
-  presentation: Presentation;
+  presentation: PresentationPb;
   isVerified: boolean;
 }
 
@@ -26,23 +26,25 @@ const makePresentationEntityOptionsFromPresentation = (
     // context: presentationContext,
     type: presentationType,
     proof: presentationProof,
-    presentationRequestUuid: presentationPresentationRequestUuid,
+    presentationRequestId: presentationPresentationRequestId,
     verifierDid
   } = presentation;
 
-  const presContext = (presentation as unknown as PresentationPb).context as ['https://www.w3.org/2018/credentials/v1', ...string[]];
-  // const presType = presentation.type as ['VerifiablePresentation', ...string[]];
-  // const presProof = presentation.proof as any as Proof;
+  // const presContext = (presentation as unknown as PresentationPb).context as ['https://www.w3.org/2018/credentials/v1', ...string[]];
+  const presContext = presentation.context as ['https://www.w3.org/2018/credentials/v1', ...string[]];
+  const presType = presentation.type as ['VerifiablePresentation', ...string[]];
+  const presProof = presentation.proof as any as Proof;
 
   const presentationVerifiableCredentials = presentation.verifiableCredential ? presentation.verifiableCredential as any as Credential[] : [];
 
   return {
     presentationContext: presContext,
-    presentationType,
+    presentationType: presType,
     presentationVerifiableCredentials,
-    presentationProof,
+    presentationProof: presProof,
     // presentationPresentationRequestUuid,
-    presentationPresentationRequestId: '2971f495-387b-4d24-ab0b-9ea3bbc6a543',
+    // presentationPresentationRequestId: '2971f495-387b-4d24-ab0b-9ea3bbc6a543',
+    presentationPresentationRequestId,
     isVerified,
     verifierDid
   };
@@ -60,8 +62,8 @@ export class PresentationServiceV3 {
   }
 
   // async createPresentationEntity (presentation: DecryptedPresentation, params?: Params): Promise<PresentationEntity> {
-  async createPresentationEntity (presentation: DecryptedPresentation, params?: Params, presentationRequestId?: string): Promise<PresentationEntity> {
-    const decryptedPresentation: Presentation = presentation.presentation as Presentation;
+  async createPresentationEntity (presentation: DecryptedPresentation, params?: Params): Promise<PresentationEntity> {
+    const decryptedPresentation: PresentationPb = presentation.presentation as PresentationPb;
     const presentationWithVerification: PresentationWithVerification = { isVerified: presentation.isVerified, presentation: decryptedPresentation };
     const options = makePresentationEntityOptionsFromPresentation(presentationWithVerification);
     try {
@@ -100,17 +102,17 @@ export class PresentationServiceV3 {
       await verifierDataService.patch(verifier.uuid, { authToken: response.authToken });
 
       // return early if the presentation could not be verified
-      // if (!result.isVerified) {
-      //   logger.warn(`Presentation verification failed: ${result.message}`);
-      //   throw new BadRequest(`Verification failed: ${result.message ? result.message : ''}`);
-      // }
+      if (!result.isVerified) {
+        logger.warn(`Presentation verification failed: ${result.message}`);
+        throw new BadRequest(`Verification failed: ${result.message ? result.message : ''}`);
+      }
 
       if (result.type === 'VerifiablePresentation') {
         try {
           // Persist the Presentation entity and add the version for the websocket handler
           const entity = {
-            // ...await this.createPresentationEntity(result, params),
-            ...await this.createPresentationEntity(result, params, data.presentationRequestInfo.presentationRequest.id),
+            ...await this.createPresentationEntity(result, params),
+            // ...await this.createPresentationEntity(result, params, data.presentationRequestInfo.presentationRequest.id),
             version: data.version
           };
 
@@ -125,8 +127,8 @@ export class PresentationServiceV3 {
       }
 
       // extract the relevant credential info to send back to UnumID SaaS for analytics.
-      const decryptedPresentation: Presentation = result.presentation as Presentation;
-      const credentialInfo: CredentialInfo = extractCredentialInfo((decryptedPresentation));
+      const decryptedPresentation: PresentationPb = result.presentation as PresentationPb;
+      const credentialInfo: CredentialInfo = extractCredentialInfo((decryptedPresentation as unknown as Presentation));
 
       const presentationReceiptInfo: PresentationReceiptInfo = {
         subjectDid: credentialInfo.subjectDid,

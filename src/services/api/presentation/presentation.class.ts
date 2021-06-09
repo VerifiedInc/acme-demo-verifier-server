@@ -40,7 +40,8 @@ const makePresentationEntityOptionsFromPresentation = (
     '@context': presentationContext,
     type: presentationType,
     proof: presentationProof,
-    presentationRequestUuid: presentationPresentationRequestUuid,
+    // presentationRequestUuid: presentationPresentationRequestUuid,
+    presentationRequestUuid: presentationPresentationRequestId, // HACK ALERT: just assigning the uuid to the id field for now until the v2 types are updated and support for v1 is removed
     verifierDid
   } = presentation;
 
@@ -52,7 +53,8 @@ const makePresentationEntityOptionsFromPresentation = (
     presentationVerifiableCredentials,
     presentationProof,
     // presentationPresentationRequestUuid,
-    presentationPresentationRequestId: '2971f495-387b-4d24-ab0b-9ea3bbc6a543',
+    // presentationPresentationRequestId: '2971f495-387b-4d24-ab0b-9ea3bbc6a543',
+    presentationPresentationRequestId,
     isVerified,
     verifierDid
   };
