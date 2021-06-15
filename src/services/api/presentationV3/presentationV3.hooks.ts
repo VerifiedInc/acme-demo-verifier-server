@@ -4,7 +4,7 @@ import { Presentation as PresentationDeprecated, NoPresentation as NoPresentatio
 import { Presentation, EncryptedPresentation, WithVersion } from '@unumid/types';
 
 import { lt, valid } from 'semver';
-import logger from '../../../../lib/logger';
+import logger from '../../../logger';
 
 export const validateData: Hook<WithVersion<EncryptedPresentation>> = (ctx) => {
   const { data, params } = ctx;
