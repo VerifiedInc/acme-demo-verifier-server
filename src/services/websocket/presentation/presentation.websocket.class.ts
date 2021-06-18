@@ -12,7 +12,7 @@ import { lt } from 'semver';
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ServiceOptions { }
 
-const makeDemoPresentationDtoFromEntity = (entity: WithVersion<PresentationEntity>): DemoPresentationDto => {
+const makeDemoPresentationDtoFromEntity = (entity: WithVersion<PresentationEntity> | PresentationPb): DemoPresentationDto => {
   const {
     uuid,
     createdAt,
@@ -24,25 +24,7 @@ const makeDemoPresentationDtoFromEntity = (entity: WithVersion<PresentationEntit
     presentationPresentationRequestId,
     isVerified,
     verifierDid
-  } = entity;
-
-  if (lt(entity.version, '2.0.0')) {
-    return {
-      uuid,
-      createdAt,
-      updatedAt,
-      presentation: {
-        '@context': presentationContext,
-        uuid,
-        type: presentationType,
-        verifiableCredential: presentationVerifiableCredentials,
-        verifierDid,
-        proof: presentationProof,
-        presentationRequestId: presentationPresentationRequestId
-      },
-      isVerified
-    };
-  }
+  } = <WithVersion<PresentationEntity>> entity;
 
   return {
     uuid,
@@ -55,21 +37,21 @@ const makeDemoPresentationDtoFromEntity = (entity: WithVersion<PresentationEntit
       verifiableCredential: presentationVerifiableCredentials,
       verifierDid,
       proof: presentationProof,
-      presentationRequestId: presentationPresentationRequestId
+      presentationRequestId: presentationPresentationRequestId || (entity as PresentationPb).presentationRequestId
     },
     isVerified
   };
 };
 
-const makeDemoPresentationDtoFromPresentation = (presentation: Presentation): DemoPresentationDto => {
-  return {
-    uuid: '1',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    presentation,
-    isVerified: true
-  };
-};
+// const makeDemoPresentationDtoFromPresentation = (presentation: Presentation): DemoPresentationDto => {
+//   return {
+//     uuid: '1',
+//     createdAt: new Date(),
+//     updatedAt: new Date(),
+//     presentation,
+//     isVerified: true
+//   };
+// };
 
 export class PresentationService {
     app: Application;
@@ -86,6 +68,7 @@ export class PresentationService {
 
     async create (
       data: WithVersion<PresentationEntity> | NoPresentationEntity | Presentation | PresentationPb,
+      // data: DemoPresentationDto | DemoPresentationDtoDeprecated,
       params?: Params
     ): Promise<DemoPresentationDto | DemoPresentationDtoDeprecated> {
       // if (data.presentationType) {
@@ -93,6 +76,7 @@ export class PresentationService {
       // }
       const response: DemoPresentationDto | DemoPresentationDtoDeprecated = makeDemoPresentationDtoFromEntity(data as WithVersion<PresentationEntity>);
 
+      // return data;
       return response;
     }
 }
