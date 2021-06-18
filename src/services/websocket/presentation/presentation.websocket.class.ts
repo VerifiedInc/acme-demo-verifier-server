@@ -33,7 +33,7 @@ const makeDemoPresentationDtoFromEntity = (entity: WithVersion<PresentationEntit
     presentation: {
       '@context': presentationContext,
       uuid,
-      type: presentationType,
+      type: presentationType || (entity as PresentationPb).type,
       verifiableCredential: presentationVerifiableCredentials,
       verifierDid,
       proof: presentationProof,
