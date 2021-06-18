@@ -1,5 +1,5 @@
 import { Params } from '@feathersjs/feathers';
-import { WithVersion } from '@unumid/types';
+import { Presentation, PresentationPb, WithVersion } from '@unumid/types';
 import { Service as MikroOrmService } from 'feathers-mikro-orm';
 
 import { Application } from '../../../declarations';
@@ -61,6 +61,16 @@ const makeDemoPresentationDtoFromEntity = (entity: WithVersion<PresentationEntit
   };
 };
 
+const makeDemoPresentationDtoFromPresentation = (presentation: Presentation): DemoPresentationDto => {
+  return {
+    uuid: '1',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    presentation,
+    isVerified: true
+  };
+};
+
 export class PresentationService {
     app: Application;
     options: ServiceOptions;
@@ -75,9 +85,12 @@ export class PresentationService {
     }
 
     async create (
-      data: WithVersion<PresentationEntity> | NoPresentationEntity,
+      data: WithVersion<PresentationEntity> | NoPresentationEntity | Presentation | PresentationPb,
       params?: Params
     ): Promise<DemoPresentationDto | DemoPresentationDtoDeprecated> {
+      // if (data.presentationType) {
+      //   console.log();
+      // }
       const response: DemoPresentationDto | DemoPresentationDtoDeprecated = makeDemoPresentationDtoFromEntity(data as WithVersion<PresentationEntity>);
 
       return response;
