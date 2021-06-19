@@ -98,10 +98,10 @@ export class PresentationServiceV2 {
       await verifierDataService.patch(verifier.uuid, { authToken: response.authToken });
 
       // return early if the presentation could not be verified
-      // if (!result.isVerified) {
-      //   logger.warn(`Presentation verification failed: ${result.message}`);
-      //   throw new BadRequest(`Verification failed: ${result.message ? result.message : ''}`);
-      // }
+      if (!result.isVerified) {
+        logger.warn(`Presentation verification failed: ${result.message}`);
+        throw new BadRequest(`Verification failed: ${result.message ? result.message : ''}`);
+      }
 
       if (result.type === 'VerifiablePresentation') {
         try {
