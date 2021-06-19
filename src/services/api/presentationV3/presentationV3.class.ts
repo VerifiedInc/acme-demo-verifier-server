@@ -1,13 +1,11 @@
 import { Params } from '@feathersjs/feathers';
 import { EncryptedPresentation, Presentation, PresentationPb, PresentationReceiptInfo, Proof, VerificationResponse, WithVersion, Credential } from '@unumid/types';
-import { Presentation as PresentationDeprecated } from '@unumid/types-deprecated-v1';
 import { Service as MikroOrmService } from 'feathers-mikro-orm';
 
 import { Application } from '../../../declarations';
 import { PresentationEntity, PresentationEntityOptions } from '../../../entities/Presentation';
 import logger from '../../../logger';
 import { BadRequest, NotFound } from '@feathersjs/errors';
-import { PresentationRequestEntity } from '../../../entities/PresentationRequest';
 import { CryptoError } from '@unumid/library-crypto';
 import { CredentialInfo, DecryptedPresentation, extractCredentialInfo, verifyPresentation } from '@unumid/server-sdk';
 
@@ -121,6 +119,8 @@ export class PresentationServiceV3 {
         }
       } else {
         logger.info('Presentation was declined, not storing.');
+        // Pass the decrypted Presentation to the websocket service for the web client's consumption
+        presentationWebsocketService.create(result.presentation);
       }
 
       // extract the relevant credential info to send back to UnumID SaaS for analytics.
