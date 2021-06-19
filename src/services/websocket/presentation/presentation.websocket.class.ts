@@ -50,7 +50,6 @@ const makeDemoPresentationDtoFromEntity = (entity: WithVersion<PresentationEntit
 export class PresentationService {
     app: Application;
     options: ServiceOptions;
-    // presentationDataService: MikroOrmService<PresentationEntity>;
     noPresentationDataService: MikroOrmService<NoPresentationEntity>;
 
     constructor (options: ServiceOptions = {}, app: Application) {
