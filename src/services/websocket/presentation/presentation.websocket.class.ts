@@ -65,7 +65,6 @@ export class PresentationService {
     ): Promise<DemoPresentationDto | DemoPresentationDtoDeprecated> {
       const response: DemoPresentationDto | DemoPresentationDtoDeprecated = makeDemoPresentationDtoFromEntity(data as WithVersion<PresentationEntity>);
 
-      // return data;
       return response;
     }
 }
