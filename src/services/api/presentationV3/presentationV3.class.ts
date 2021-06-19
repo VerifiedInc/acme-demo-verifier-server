@@ -1,17 +1,13 @@
 import { Params } from '@feathersjs/feathers';
 import { EncryptedPresentation, Presentation, PresentationPb, PresentationReceiptInfo, Proof, VerificationResponse, WithVersion, Credential } from '@unumid/types';
-import { Presentation as PresentationDeprecated } from '@unumid/types-deprecated-v1';
 import { Service as MikroOrmService } from 'feathers-mikro-orm';
 
 import { Application } from '../../../declarations';
 import { PresentationEntity, PresentationEntityOptions } from '../../../entities/Presentation';
 import logger from '../../../logger';
 import { BadRequest, NotFound } from '@feathersjs/errors';
-import { PresentationRequestEntity } from '../../../entities/PresentationRequest';
 import { CryptoError } from '@unumid/library-crypto';
 import { CredentialInfo, DecryptedPresentation, extractCredentialInfo, verifyPresentation } from '@unumid/server-sdk';
-import { DemoPresentationDto } from '@unumid/demo-types';
-import { Entity } from '@mikro-orm/core';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ServiceOptions { }
@@ -20,55 +16,6 @@ export interface PresentationWithVerification {
   presentation: PresentationPb;
   isVerified: boolean;
 }
-
-// const makeDemoPresentationDtoFromEntity = (entity: WithVersion<PresentationEntity>): DemoPresentationDto => {
-//   const {
-//     uuid,
-//     createdAt,
-//     updatedAt,
-//     presentationContext,
-//     presentationType,
-//     presentationVerifiableCredentials,
-//     presentationProof,
-//     presentationPresentationRequestId,
-//     isVerified,
-//     verifierDid
-//   } = entity;
-
-//   // if (lt(entity.version, '2.0.0')) {
-//   //   return {
-//   //     uuid,
-//   //     createdAt,
-//   //     updatedAt,
-//   //     presentation: {
-//   //       '@context': presentationContext,
-//   //       uuid,
-//   //       type: presentationType,
-//   //       verifiableCredential: presentationVerifiableCredentials,
-//   //       verifierDid,
-//   //       proof: presentationProof,
-//   //       presentationRequestId: presentationPresentationRequestId
-//   //     },
-//   //     isVerified
-//   //   };
-//   // }
-
-//   return {
-//     uuid,
-//     createdAt,
-//     updatedAt,
-//     presentation: {
-//       '@context': presentationContext,
-//       uuid,
-//       type: presentationType,
-//       verifiableCredential: presentationVerifiableCredentials,
-//       verifierDid,
-//       proof: presentationProof,
-//       presentationRequestId: presentationPresentationRequestId
-//     },
-//     isVerified
-//   };
-// };
 
 const makePresentationEntityOptionsFromPresentation = (
   { presentation, isVerified }: PresentationWithVerification
@@ -165,8 +112,6 @@ export class PresentationServiceV3 {
           };
 
           // Pass the Presentation entity with version to the websocket service for the web client's consumption
-          // const prestiontationDto = makeDemoPresentationDtoFromEntity(entity);
-          // presentationWebsocketService.create(prestiontationDto);
           presentationWebsocketService.create(entity);
         } catch (e) {
           logger.error('PresentationService.create caught an error thrown by PresentationService.createPresentationEntity', e);
@@ -175,7 +120,6 @@ export class PresentationServiceV3 {
       } else {
         logger.info('Presentation was declined, not storing.');
         // Pass the decrypted Presentation to the websocket service for the web client's consumption
-        // presentationWebsocketService.create({ presentation });
         presentationWebsocketService.create(result.presentation);
       }
 

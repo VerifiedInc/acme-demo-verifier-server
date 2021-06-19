@@ -7,7 +7,6 @@ import { NoPresentationEntity } from '../../../entities/NoPresentation';
 import { PresentationEntity } from '../../../entities/Presentation';
 import { DemoPresentationDto as DemoPresentationDtoDeprecated } from '@unumid/demo-types-deprecated-v2';
 import { DemoPresentationDto } from '@unumid/demo-types';
-import { lt } from 'semver';
 import { isArrayEmpty } from '../../../utils/isArrayEmpty';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -27,9 +26,8 @@ const makeDemoPresentationDtoFromEntity = (entity: WithVersion<PresentationEntit
     verifierDid
   } = <WithVersion<PresentationEntity>> entity;
 
-  // HACK ALERT: to get around new presentations from the mobile sdk still using the deprecated NoPresentation type
-  // I am going to mask it here.
-  const maskedType = (entity as PresentationPb).type.includes('NoPresentation') && isArrayEmpty((entity as PresentationPb).verifiableCredential) ? ['VerifiablePresentation'] : (entity as PresentationPb).type;
+  // HACK ALERT: to get around new presentations from the mobile sdk still using the deprecated NoPresentation type I am going to mask it here.
+  const maskedType = (entity as PresentationPb).type && (entity as PresentationPb).type.includes('NoPresentation') && isArrayEmpty((entity as PresentationPb).verifiableCredential) ? ['VerifiablePresentation'] : (entity as PresentationPb).type;
 
   return {
     uuid,
