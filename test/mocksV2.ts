@@ -309,7 +309,7 @@ export const dummyPresentationUnsigned: UnsignedPresentation = {
   type: [
     'VerifiablePresentation'
   ],
-  // presentationRequestId: dummyPresentationRequestId,
+  presentationRequestUuid: dummyPresentationRequestUuid,
   presentationRequestId: dummyPresentationRequestId,
   verifierDid: dummyVerifierDid,
   verifiableCredential: [
@@ -330,7 +330,7 @@ export const dummyDeclinedPresentationUnsigned: UnsignedPresentation = {
   type: [
     'VerifiablePresentation'
   ],
-  // presentationRequestUuid: dummyPresentationRequestUuid,
+  presentationRequestUuid: dummyPresentationRequestUuid,
   presentationRequestId: dummyPresentationRequestId,
   verifierDid: dummyVerifierDid,
   verifiableCredential: [
