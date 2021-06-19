@@ -13,7 +13,7 @@ import { Presentation } from '@unumid/types-deprecated-v2';
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ServiceOptions { }
 
-const makeDemoPresentationDtoFromEntity = (entity: WithVersion<PresentationEntity> | PresentationPb): DemoPresentationDto => {
+const makeDemoPresentationDtoFromEntity = (entity: WithVersion<PresentationEntity> | PresentationPb | Presentation): DemoPresentationDto => {
   const {
     uuid,
     createdAt,
