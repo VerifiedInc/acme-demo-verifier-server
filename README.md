@@ -1,6 +1,11 @@
+# ACME Demo Server
+> This project acts as a backend for a fictional customer, Acme, which uses Unum ID for the [beyond passwordless](https://www.unum.id/solutions/beyond-passwordless) solution for authentication.
+
+Information about the Unum ID demo ecosystem can be found in our [documentation](https://docs.unum.id/#demos).
+
 # feathers-mikro-orm-starter
 
-> A starter app using [FeathersJS](https://feathersjs.com) and [MikroORM](https://mikro-orm.io) with some additional configuration set up
+A starter app using [FeathersJS](https://feathersjs.com) and [MikroORM](https://mikro-orm.io) with some additional configuration set up
 
 ## What the starter app includes
 ### Feathers
@@ -18,7 +23,7 @@
 - our custom adatper to help feathers and mikroORM play nice together
 
 ### Unum ID types
-- our shared types library, so you won't have to redefine the interface for a PresentationRequest again
+- our shared types library, so you won't have to redefine the interface for a PresentationRequest again. Info can be found [here](https://www.npmjs.com/package/@unumid/types).
 
 ### ESLint
 - configured for TypeScript and [semistandard](https://github.com/standard/semistandard)
@@ -81,3 +86,10 @@ $ feathers help                           # Show all commands
 #### Help
 
 For more information on all the things you can do with Feathers visit [docs.feathersjs.com](http://docs.feathersjs.com).
+
+## Release Instructions
+### Dev
+Just merging changes to `main` will trigger automated deployments to dev.
+
+### Sandbox
+To release version of this project to sandbox push a tag with a preceding `v`. This will trigger an automated deployment to sandbox.
