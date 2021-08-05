@@ -16,8 +16,13 @@ export class ChannelService {
     logger.info(`channel: ${channel}`);
 
     if (connection) {
-      logger.info(`connection: ${JSON.stringify(connection)}`);
-      this.app.channel(channel).join(connection);
+      try {
+        logger.info(`connection: ${JSON.stringify(connection)}`);
+        this.app.channel(channel).join(connection);
+      } catch (e) {
+        logger.error(`error joining channel ${channel}`);
+        logger.error(e);
+      }
     }
   }
 
