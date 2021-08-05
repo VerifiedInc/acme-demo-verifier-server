@@ -19,6 +19,7 @@ import sms from './api/sms/sms.service';
 
 // Websocket services
 import presentationWebsocket from './websocket/presentation/presentation.websocket.service';
+import channel from './websocket/channel/channel.websocket.service';
 
 export default function (app: Application): void {
   app.configure(sessionData);
@@ -35,4 +36,5 @@ export default function (app: Application): void {
   app.configure(email);
   app.configure(sms);
   app.configure(presentationWebsocket);
+  app.configure(channel);
 }
