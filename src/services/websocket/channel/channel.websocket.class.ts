@@ -8,7 +8,7 @@ interface ServiceOptions { }
 export class ChannelService {
   private app: Application;
   private options: ServiceOptions;
-  async create (data: { channel: string}, params: Params): Promise<void> {
+  async create (data: { channel: string}, params: Params): Promise<{ success: boolean }> {
     logger.info('channelService create');
     const { channel } = data;
     const { connection } = params;
@@ -19,12 +19,16 @@ export class ChannelService {
       try {
         logger.info(`connection: ${JSON.stringify(connection)}`);
         this.app.channel(channel).join(connection);
+
+        return { success: true };
       } catch (e) {
         logger.error(`error joining channel ${channel}`);
         logger.error(e);
         throw e;
       }
     }
+
+    return { success: false };
   }
 
   constructor (options: ServiceOptions = {}, app: Application) {
