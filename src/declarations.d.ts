@@ -4,4 +4,4 @@ import { Application as ExpressFeathers } from '@feathersjs/express';
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ServiceTypes {}
 // The application instance type that will be used everywhere else
-export type Application = ExpressFeathers<ServiceTypes>;
+export type Application = ExpressFeathers<ServiceTypes> & { channel: any };
