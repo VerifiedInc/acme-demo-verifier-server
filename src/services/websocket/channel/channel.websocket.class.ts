@@ -22,6 +22,7 @@ export class ChannelService {
       } catch (e) {
         logger.error(`error joining channel ${channel}`);
         logger.error(e);
+        throw e;
       }
     }
   }
