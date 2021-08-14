@@ -141,7 +141,8 @@ export const dummyVerifierResponseDto: VerifierResponseDto = {
     customerUuid,
     url: 'https://verifier-api.demo.unum.id/presentation',
     isAuthorized: true,
-    versionInfo: [{ target: { version: '2.0.0' }, sdkVersion: '2.0.0' }]
+    versionInfo: [{ target: { version: '2.0.0' }, sdkVersion: '2.0.0' }],
+    apiKey: 'VivPO5o37AXK8pcbMh7Kzm5XH02YiCVw1KQ60ozJX3k='
   }
 };
 
