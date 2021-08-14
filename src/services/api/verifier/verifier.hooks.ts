@@ -21,7 +21,7 @@ export const validateVerifierCreateOptions: Hook<VerifierCreateOptions> = (ctx) 
     throw new BadRequest('data is required.');
   }
 
-  const { apiKey, customerUuid, name, url, versionInfo } = data;
+  const { apiKey, customerUuid, url, versionInfo } = data;
 
   if (!apiKey) {
     throw new BadRequest('apiKey is required.');
@@ -29,10 +29,6 @@ export const validateVerifierCreateOptions: Hook<VerifierCreateOptions> = (ctx) 
 
   if (!customerUuid) {
     throw new BadRequest('customerUuid is required.');
-  }
-
-  if (!name) {
-    throw new BadRequest('name is required.');
   }
 
   if (!url) {
@@ -65,7 +61,7 @@ export const registerVerifierHook: Hook<RegisterVerifierData> = async (ctx) => {
   let response;
 
   try {
-    response = await registerVerifier(name, customerUuid, url, apiKey, versionInfo);
+    response = await registerVerifier(customerUuid, url, apiKey, versionInfo);
   } catch (e) {
     logger.error('registerVerifierHook caught an error thrown by the server sdk', e);
     throw new GeneralError('Error registering verifier.');
@@ -94,7 +90,8 @@ export const registerVerifierHook: Hook<RegisterVerifierData> = async (ctx) => {
     name,
     customerUuid,
     url,
-    versionInfo
+    versionInfo,
+    apiKey
   };
 
   const newData: VerifierRequestDto = {
