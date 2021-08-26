@@ -1,5 +1,5 @@
 # ACME Demo Server
-> This project acts as a backend for a fictional customer, Acme, which uses Unum ID for the [beyond passwordless](https://www.unum.id/solutions/beyond-passwordless) solution for authentication.
+> This project acts as a backend for a fictional customer, Acme, which uses Unum ID for the [passwordless auth](https://www.unum.id/solutions/passwordless-auth) solution for authentication.
 
 Information about the Unum ID demo ecosystem can be found in our [documentation](https://docs.unum.id/#demos).
 
