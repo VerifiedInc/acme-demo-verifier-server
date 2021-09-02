@@ -11,6 +11,7 @@ import { PresentationEntity } from './entities/Presentation';
 import { NoPresentationEntity } from './entities/NoPresentation';
 
 const mikroOrmConfig: Options = {
+  cache: { enabled: false }, // disabling to try to get around the odd PushToken invalid transaction "stuck" bug. ref: https://mikro-orm.io/docs/metadata-cache/
   baseDir: process.cwd(),
   type: 'postgresql',
   dbName: config.DB_NAME,
