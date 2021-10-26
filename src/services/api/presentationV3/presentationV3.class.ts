@@ -90,6 +90,7 @@ export class PresentationServiceV3 {
       const authToken = verifier.authToken.startsWith('Bearer ') ? verifier.authToken : `Bearer ${verifier.authToken}`;
 
       const response = await verifyPresentation(authToken, data.encryptedPresentation, verifier.verifierDid, verifier.encryptionPrivateKey, data.presentationRequestInfo);
+      // const response = await verifyPresentation(authToken, data.encryptedPresentation, verifier.verifierDid, verifier.encryptionPrivateKey);
       const result: DecryptedPresentation = response.body;
 
       logger.info(`response from server sdk ${JSON.stringify(result)}`);
@@ -133,6 +134,7 @@ export class PresentationServiceV3 {
         verifierDid: verifier.verifierDid,
         holderApp: data.presentationRequestInfo.presentationRequest.holderAppUuid,
         presentationRequestUuid: data.presentationRequestInfo.presentationRequest.uuid,
+        presentationRequestId: data.presentationRequestInfo.presentationRequest.id,
         issuers: result.type === 'VerifiablePresentation' ? presentationRequest.prIssuerInfo : undefined
       };
 
