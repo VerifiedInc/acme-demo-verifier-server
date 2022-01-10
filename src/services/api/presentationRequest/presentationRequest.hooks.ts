@@ -14,7 +14,7 @@ export const validatePresentationRequestOptions: Hook<DemoPresentationRequestCre
     throw new BadRequest('data is required.');
   }
 
-  const { credentialRequests } = data;
+  const { credentialRequests, holderAppUuid } = data;
 
   if (!credentialRequests) {
     throw new BadRequest('credentialRequests is required.');
@@ -31,6 +31,10 @@ export const validatePresentationRequestOptions: Hook<DemoPresentationRequestCre
       throw new BadRequest('credentialRequest issuers is required.');
     }
   });
+
+  if (!holderAppUuid) {
+    throw new BadRequest('holderAppUuid is required.');
+  }
 
   ctx.params.isValidated = true;
 };
@@ -49,7 +53,7 @@ export const sendRequestHook: Hook<SendRequestHookData> = async (ctx) => {
     throw new GeneralError('Hook context has not been validated. Did you forget to run the validatePresentationRequestOptions hook before this one?');
   }
 
-  const { credentialRequests, metadata } = ctx.data;
+  const { credentialRequests, metadata, holderAppUuid } = ctx.data;
 
   const { uuid, verifierDid, authToken, signingPrivateKey } = await ctx.app.service('verifierData').getDefaultVerifierEntity();
 
@@ -61,7 +65,7 @@ export const sendRequestHook: Hook<SendRequestHookData> = async (ctx) => {
       verifierDid,
       credentialRequests,
       signingPrivateKey,
-      config.HOLDER_APP_UUID,
+      holderAppUuid as string, // already ensured existence by the validatePresentationRequestOptions hook
       undefined,
       metadata
     );

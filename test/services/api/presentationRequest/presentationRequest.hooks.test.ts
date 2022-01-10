@@ -7,7 +7,7 @@ import {
   sendRequestHook,
   hooks
 } from '../../../../src/services/api/presentationRequest/presentationRequest.hooks';
-import { dummyIssuerDid, dummyPresentationRequestPostDto, dummyVerifierEntity } from '../../../mocks';
+import { dummyHolderAppUuid, dummyIssuerDid, dummyPresentationRequestPostDto, dummyVerifierEntity } from '../../../mocks';
 import { config } from '../../../../src/config';
 import logger from '../../../../src/logger';
 
@@ -26,6 +26,23 @@ describe('presentationRequest service hooks', () => {
         fail();
       } catch (e) {
         expect(e).toEqual(new BadRequest('data is required.'));
+      }
+    });
+
+    it('throws a BadRequest if holderAppUuid is missing', () => {
+      const ctx = {
+        data: {
+          credentialRequests: [{
+            type: 'TestCredential',
+            issuers: [dummyIssuerDid]
+          }]
+        }
+      } as HookContext;
+      try {
+        validatePresentationRequestOptions(ctx);
+        fail();
+      } catch (e) {
+        expect(e).toEqual(new BadRequest('holderAppUuid is required.'));
       }
     });
 
@@ -75,7 +92,8 @@ describe('presentationRequest service hooks', () => {
           credentialRequests: [{
             type: 'TestCredential',
             issuers: [dummyIssuerDid]
-          }]
+          }],
+          holderAppUuid: dummyHolderAppUuid
         },
         params: {}
       } as HookContext;
@@ -115,7 +133,7 @@ describe('presentationRequest service hooks', () => {
       }];
 
       const ctx = {
-        data: { credentialRequests, metadata: dummyPresentationRequestPostDto.presentationRequest.metadata },
+        data: { credentialRequests, holderAppUuid: dummyHolderAppUuid, metadata: dummyPresentationRequestPostDto.presentationRequest.metadata },
         params: { isValidated: true },
         app: { service: () => ({ getDefaultVerifierEntity: () => dummyVerifierEntity, patch: jest.fn() }) }
       } as unknown as HookContext;
@@ -132,7 +150,8 @@ describe('presentationRequest service hooks', () => {
         dummyVerifierEntity.verifierDid,
         credentialRequests,
         dummyVerifierEntity.signingPrivateKey,
-        config.HOLDER_APP_UUID,
+        // config.HOLDER_APP_UUID,
+        dummyHolderAppUuid,
         undefined,
         dummyPresentationRequestPostDto.presentationRequest.metadata
       );
