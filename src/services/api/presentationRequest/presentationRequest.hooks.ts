@@ -1,7 +1,7 @@
 import { Hook } from '@feathersjs/feathers';
 import { BadRequest, GeneralError } from '@feathersjs/errors';
 import { sendRequest } from '@unumid/server-sdk';
-import { PresentationRequestPostDto } from '@unumid/types';
+import { PresentationRequestDto, PresentationRequestPostDto } from '@unumid/types';
 import { DemoPresentationRequestCreateOptions } from '@unumid/demo-types';
 
 import { config } from '../../../config';
@@ -39,7 +39,7 @@ export const validatePresentationRequestOptions: Hook<DemoPresentationRequestCre
   ctx.params.isValidated = true;
 };
 
-type SendRequestHookData = DemoPresentationRequestCreateOptions | PresentationRequestPostDto;
+type SendRequestHookData = DemoPresentationRequestCreateOptions | PresentationRequestDto;
 
 const isDemoPresentationRequestCreateOptions = (obj: any): obj is DemoPresentationRequestCreateOptions =>
   !!obj.credentialRequests;
