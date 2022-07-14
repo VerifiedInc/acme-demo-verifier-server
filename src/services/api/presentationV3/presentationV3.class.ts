@@ -1,5 +1,5 @@
 import { Params } from '@feathersjs/feathers';
-import { EncryptedPresentation, Presentation, PresentationPb, PresentationReceiptInfo, Proof, VerificationResponse, WithVersion, Credential } from '@unumid/types';
+import { EncryptedPresentation, Presentation, PresentationPb, PresentationReceiptInfo, Proof, VerificationResponse, WithVersion, Credential, IssuerInfoMap } from '@unumid/types';
 import { Service as MikroOrmService } from 'feathers-mikro-orm';
 
 import { Application } from '../../../declarations';
@@ -70,6 +70,8 @@ export class PresentationServiceV3 {
     params?: Params
   ): Promise<VerificationResponse> {
     try {
+      const { encryptedPresentation, presentationRequestInfo } = data;
+
       const presentationRequestService = this.app.service('presentationRequestData');
       const presentationWebsocketService = this.app.service('presentationWebsocket');
 
@@ -78,7 +80,7 @@ export class PresentationServiceV3 {
        * However leaving here as an example in case additional contextual info needs to be saved on the request object
        * one should query on the id field, not uuid, thanks to UnumId under the hood handling of potential request versioning.
        */
-      const presentationRequest = await presentationRequestService.get(null, { where: { prId: data.presentationRequestInfo.presentationRequest.id } });
+      const presentationRequest = await presentationRequestService.get(null, { where: { prId: presentationRequestInfo.presentationRequest.id } });
       if (!presentationRequest) {
         throw new NotFound('PresentationRequest not found.');
       }
@@ -89,8 +91,7 @@ export class PresentationServiceV3 {
       // Needed to roll over the old attribute value that wasn't storing the Bearer as part of the token. Ought to remove once the roll over is complete. Figured simple to enough to just handle in app code.
       const authToken = verifier.authToken.startsWith('Bearer ') ? verifier.authToken : `Bearer ${verifier.authToken}`;
 
-      const response = await verifyPresentation(authToken, data.encryptedPresentation, verifier.verifierDid, verifier.encryptionPrivateKey, data.presentationRequestInfo);
-      // const response = await verifyPresentation(authToken, data.encryptedPresentation, verifier.verifierDid, verifier.encryptionPrivateKey);
+      const response = await verifyPresentation(authToken, encryptedPresentation, verifier.verifierDid, verifier.encryptionPrivateKey, presentationRequestInfo);
       const result: DecryptedPresentation = response.body;
 
       logger.info(`response from server sdk ${JSON.stringify(result)}`);
@@ -128,14 +129,20 @@ export class PresentationServiceV3 {
       const decryptedPresentation: PresentationPb = result.presentation as PresentationPb;
       const credentialInfo: CredentialInfo = extractCredentialInfo((decryptedPresentation as unknown as Presentation));
 
+      // const issuerInfoMap: IssuerInfoMap = {
+      //   [credentialInfo.verdifierDid]: {
+      //     ...presentationRequest.prIssuerInfo
+      //   }
+      // };
+
       const presentationReceiptInfo: PresentationReceiptInfo = {
         subjectDid: credentialInfo.subjectDid,
         credentialTypes: credentialInfo.credentialTypes,
         verifierDid: verifier.verifierDid,
-        holderApp: data.presentationRequestInfo.presentationRequest.holderAppUuid,
-        presentationRequestUuid: data.presentationRequestInfo.presentationRequest.uuid,
-        presentationRequestId: data.presentationRequestInfo.presentationRequest.id,
-        issuers: result.type === 'VerifiablePresentation' ? presentationRequest.prIssuerInfo : undefined
+        holderApp: presentationRequestInfo.presentationRequest.holderAppUuid,
+        presentationRequestUuid: presentationRequestInfo.presentationRequest.uuid,
+        presentationRequestId: presentationRequestInfo.presentationRequest.id,
+        issuers: result.type === 'VerifiablePresentation' ? presentationRequestInfo.issuers : undefined
       };
 
       logger.info(`Handled encrypted presentation of type ${result.type}${result.type === 'VerifiablePresentation' ? ` with credentials [${credentialInfo.credentialTypes}]` : ''} for subject ${credentialInfo.subjectDid}`);
