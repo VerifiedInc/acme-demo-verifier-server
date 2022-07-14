@@ -18,7 +18,7 @@ export class SmsService {
 
   async create (options: SmsOptions): Promise<UnumDto<undefined>> {
     const verifierDataService = this.app.service('verifierData');
-    const verifier = await verifierDataService.getDefaultVerifierEntity();
+    const verifier = await verifierDataService.getVerifierEntity();
 
     let result: UnumDto<undefined>;
 

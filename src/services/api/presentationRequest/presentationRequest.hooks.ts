@@ -55,7 +55,7 @@ export const sendRequestHook: Hook<SendRequestHookData> = async (ctx) => {
 
   const { credentialRequests, metadata, holderAppUuid } = ctx.data;
 
-  const { uuid, verifierDid, authToken, signingPrivateKey } = await ctx.app.service('verifierData').getDefaultVerifierEntity();
+  const { uuid, verifierDid, authToken, signingPrivateKey } = await ctx.app.service('verifierData').getVerifierEntity();
 
   let response;
 

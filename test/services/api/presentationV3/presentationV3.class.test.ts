@@ -33,7 +33,7 @@ describe('PresentationServiceV3', () => {
   const mockDataService = {
     create: jest.fn(),
     get: jest.fn(),
-    getDefaultVerifierEntity: jest.fn(),
+    getVerifierEntity: jest.fn(),
     patch: jest.fn(),
     findOne: jest.fn()
   };
@@ -50,7 +50,7 @@ describe('PresentationServiceV3', () => {
   describe('create', () => {
     beforeEach(() => {
       mockDataService.get.mockResolvedValueOnce(dummyPresentationRequestEntity);
-      mockDataService.getDefaultVerifierEntity.mockResolvedValueOnce(dummyVerifierEntity);
+      mockDataService.getVerifierEntity.mockResolvedValueOnce(dummyVerifierEntity);
       mockDataService.patch.mockResolvedValueOnce(dummyVerifierEntity);
     });
 
