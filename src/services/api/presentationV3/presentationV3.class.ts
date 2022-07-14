@@ -129,12 +129,6 @@ export class PresentationServiceV3 {
       const decryptedPresentation: PresentationPb = result.presentation as PresentationPb;
       const credentialInfo: CredentialInfo = extractCredentialInfo((decryptedPresentation as unknown as Presentation));
 
-      // const issuerInfoMap: IssuerInfoMap = {
-      //   [credentialInfo.verdifierDid]: {
-      //     ...presentationRequest.prIssuerInfo
-      //   }
-      // };
-
       const presentationReceiptInfo: PresentationReceiptInfo = {
         subjectDid: credentialInfo.subjectDid,
         credentialTypes: credentialInfo.credentialTypes,
