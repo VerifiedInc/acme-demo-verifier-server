@@ -80,7 +80,7 @@ describe('VerifierDataService', () => {
       });
     });
 
-    describe('getDefaultVerifierEntity', () => {
+    describe('getVerifierEntity', () => {
       let savedVerifier1: VerifierEntity;
 
       beforeEach(async () => {
@@ -88,8 +88,8 @@ describe('VerifierDataService', () => {
         await service.create(dummyVerifierEntityOptions);
       });
 
-      it('gets the first verifier from the database', async () => {
-        const defaultVerifierEntity = await service.getDefaultVerifierEntity();
+      it('gets the right verifier from the database', async () => {
+        const defaultVerifierEntity = await service.getVerifierEntity(savedVerifier1.verifierDid);
         expect(defaultVerifierEntity).toEqual(savedVerifier1);
       });
     });

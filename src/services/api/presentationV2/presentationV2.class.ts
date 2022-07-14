@@ -84,7 +84,7 @@ export class PresentationServiceV2 {
       }
 
       const verifierDataService = this.app.service('verifierData');
-      const verifier = await verifierDataService.getDefaultVerifierEntity();
+      const verifier = await verifierDataService.getVerifierEntity();
 
       // Needed to roll over the old attribute value that wasn't storing the Bearer as part of the token. Ought to remove once the roll over is complete. Figured simple to enough to just handle in app code.
       const authToken = verifier.authToken.startsWith('Bearer ') ? verifier.authToken : `Bearer ${verifier.authToken}`;

@@ -4,14 +4,14 @@ import { ServiceAddons } from '@feathersjs/feathers';
 import { Application } from '../../declarations';
 import { VerifierEntity } from '../../entities/Verifier';
 import logger from '../../logger';
+import { config } from '../../config';
 
 export class VerifierDataService extends MikroOrmService<VerifierEntity> {
-  async getDefaultVerifierEntity (): Promise<VerifierEntity> {
+  async getVerifierEntity (verifierDid = config.VERIFIER_DID): Promise<VerifierEntity> {
     try {
-      const [defaultVerifierEntity] = await this.find();
-      return defaultVerifierEntity;
+      return await this.get(null, { where: { verifierDid } });
     } catch (e) {
-      logger.error('VerifierDataService.getDefaultVerifierEntity caught an error thrown by this.find', e);
+      logger.error('VerifierDataService.getVerifierEntity caught an error thrown by this.find', e);
       throw e;
     }
   }

@@ -9,7 +9,7 @@ jest.mock('@unumid/server-sdk');
 describe('EmailService', () => {
   describe('create', () => {
     const mockVerifierDataService = {
-      getDefaultVerifierEntity: () => Promise.resolve(dummyVerifierEntity),
+      getVerifierEntity: () => Promise.resolve(dummyVerifierEntity),
       patch: jest.fn()
     };
 

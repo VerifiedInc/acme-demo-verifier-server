@@ -135,7 +135,7 @@ describe('presentationRequest service hooks', () => {
       const ctx = {
         data: { credentialRequests, holderAppUuid: dummyHolderAppUuid, metadata: dummyPresentationRequestPostDto.presentationRequest.metadata },
         params: { isValidated: true },
-        app: { service: () => ({ getDefaultVerifierEntity: () => dummyVerifierEntity, patch: jest.fn() }) }
+        app: { service: () => ({ getVerifierEntity: () => dummyVerifierEntity, patch: jest.fn() }) }
       } as unknown as HookContext;
 
       (sendRequest as jest.Mock).mockResolvedValue({
@@ -168,7 +168,7 @@ describe('presentationRequest service hooks', () => {
       const ctx = {
         data: { credentialRequests },
         params: { isValidated: true },
-        app: { service: () => ({ getDefaultVerifierEntity: () => dummyVerifierEntity, patch: jest.fn() }) }
+        app: { service: () => ({ getVerifierEntity: () => dummyVerifierEntity, patch: jest.fn() }) }
       } as unknown as HookContext;
 
       const err = new Error('server sdk error');
@@ -192,7 +192,7 @@ describe('presentationRequest service hooks', () => {
       const ctx = {
         data: { credentialRequests },
         params: { isValidated: true },
-        app: { service: () => ({ getDefaultVerifierEntity: () => dummyVerifierEntity, patch: jest.fn() }) }
+        app: { service: () => ({ getVerifierEntity: () => dummyVerifierEntity, patch: jest.fn() }) }
       } as unknown as HookContext;
 
       (sendRequest as jest.Mock).mockResolvedValue({ body: dummyPresentationRequestPostDto });

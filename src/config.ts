@@ -14,6 +14,7 @@ interface Config {
   DB_USER: string;
   DB_PASSWORD: string;
   HOLDER_APP_UUID: string;
+  VERIFIER_DID: string;
 }
 
 const {
@@ -30,7 +31,8 @@ const {
   TEST_DB_PORT = '5432',
   TEST_DB_USER = '',
   TEST_DB_PASSWORD = '',
-  HOLDER_APP_UUID = ''
+  HOLDER_APP_UUID = '',
+  VERIFIER_DID = ''
 } = process.env;
 
 const dbConfig = isTestEnv(NODE_ENV)
@@ -54,5 +56,6 @@ export const config: Config = {
   PAPERTRAIL_PORT: parseInt(PAPERTRAIL_PORT, 10),
   LOG_LEVEL,
   HOLDER_APP_UUID,
+  VERIFIER_DID,
   ...dbConfig
 };
