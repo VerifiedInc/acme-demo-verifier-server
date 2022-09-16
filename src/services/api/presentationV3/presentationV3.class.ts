@@ -75,15 +75,17 @@ export class PresentationServiceV3 {
       const presentationRequestService = this.app.service('presentationRequestData');
       const presentationWebsocketService = this.app.service('presentationWebsocket');
 
-      /**
-       * Note: actually not necessary anymore due to the full presentation request object being sent with the EncryptedPresentation type.
-       * However leaving here as an example in case additional contextual info needs to be saved on the request object
-       * one should query on the id field, not uuid, thanks to UnumId under the hood handling of potential request versioning.
-       */
-      const presentationRequest = await presentationRequestService.get(null, { where: { prId: presentationRequestInfo.presentationRequest.id } });
-      if (!presentationRequest) {
-        throw new NotFound('PresentationRequest not found.');
-      }
+      // /**
+      //  * Note: actually not necessary anymore due to the full presentation request object being sent with the EncryptedPresentation type.
+      //  * However leaving here as an example in case additional contextual info needs to be saved on the request object
+      //  * one should query on the id field, not uuid, thanks to UnumId under the hood handling of potential request versioning.
+      //  *
+      //  * If feeling the desire to persist presentation requests, it is recommended to first consider using the presentation request metadata attribute.
+      //  */
+      // const presentationRequest = await presentationRequestService.get(null, { where: { prId: data.presentationRequestInfo.presentationRequest.id } });
+      // if (!presentationRequest) {
+      //   throw new NotFound(`PresentationRequest ${data.presentationRequestInfo.presentationRequest.id} not found.`);
+      // }
 
       const verifierDataService = this.app.service('verifierData');
       const verifier = await verifierDataService.getVerifierEntity();
